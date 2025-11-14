@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 
 // Validation schema
@@ -36,24 +36,30 @@ export async function POST(request: NextRequest) {
     // Validate request body
     const validatedData = tradeSchema.parse(body)
     
-    // Get user - either from auth or from provided user_id
-    const supabase = await createServerSupabaseClient()
+    // Get user ID
     let userId: string
 
     if (validatedData.user_id) {
       // User ID provided directly (useful for NinjaTrader integration)
       userId = validatedData.user_id
     } else {
-      // Try to get from auth session
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        return NextResponse.json(
-          { error: 'Authentication required' },
-          { status: 401 }
-        )
-      }
-      userId = user.id
+      return NextResponse.json(
+        { error: 'user_id is required' },
+        { status: 400 }
+      )
     }
+
+    // Create Supabase admin client (bypasses RLS)
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
 
     // Insert trade into database
     const { data, error } = await supabase
