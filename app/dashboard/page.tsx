@@ -105,12 +105,25 @@ export default async function DashboardPage() {
         {/* Secondary KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <KPICard
+            title="Assertividade"
+            value={`${formatNumber(metrics.assertiveness, 1)}%`}
+            subtitle={
+              metrics.assertiveness >= 70 ? "🎯 Excelente precisão" :
+              metrics.assertiveness >= 50 ? "✅ Boa assertividade" :
+              "⚠️ Precisa melhorar"
+            }
+            icon="Target"
+            valueColor={metrics.assertiveness >= 70 ? 'profit' : metrics.assertiveness >= 50 ? 'neutral' : 'loss'}
+            delay={0.4}
+          />
+          
+          <KPICard
             title="Profit Factor"
             value={formatNumber(metrics.profitFactor, 2)}
             subtitle="✨ Excellent strategy"
             icon="BarChart3"
             valueColor={metrics.profitFactor >= 1.5 ? 'profit' : metrics.profitFactor >= 1 ? 'neutral' : 'loss'}
-            delay={0.4}
+            delay={0.5}
           />
           
           <KPICard
@@ -119,7 +132,7 @@ export default async function DashboardPage() {
             subtitle="⚡ Moderate consistency"
             icon="Percent"
             valueColor={metrics.consistencyScore >= 60 ? 'profit' : 'neutral'}
-            delay={0.5}
+            delay={0.6}
           />
           
           <KPICard
@@ -128,15 +141,6 @@ export default async function DashboardPage() {
             subtitle="📊 Good risk-adjusted returns"
             icon="TrendingUp"
             valueColor={metrics.sharpeRatio >= 1 ? 'profit' : 'neutral'}
-            delay={0.6}
-          />
-          
-          <KPICard
-            title="Max Drawdown"
-            value={formatCurrency(metrics.maxDrawdown)}
-            subtitle="⚠ Largest drawdown"
-            icon="TrendingDown"
-            valueColor="loss"
             delay={0.7}
           />
         </div>

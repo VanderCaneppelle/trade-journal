@@ -20,6 +20,7 @@ export interface TradeMetrics {
   averageWin: number
   averageLoss: number
   expectancy: number
+  assertiveness: number
 }
 
 export function calculateMetrics(trades: Trade[]): TradeMetrics {
@@ -42,6 +43,7 @@ export function calculateMetrics(trades: Trade[]): TradeMetrics {
       averageWin: 0,
       averageLoss: 0,
       expectancy: 0,
+      assertiveness: 0,
     }
   }
 
@@ -84,6 +86,11 @@ export function calculateMetrics(trades: Trade[]): TradeMetrics {
   // Expectancy
   const expectancy = (winRate / 100) * averageWin + ((100 - winRate) / 100) * averageLoss
 
+  // Assertiveness (0-100)
+  // Combina Win Rate com qualidade dos trades (ratio win/loss size)
+  const avgWinLossRatio = averageLoss !== 0 ? Math.abs(averageWin / averageLoss) : 1
+  const assertiveness = calculateAssertiveness(winRate, avgWinLossRatio, profitFactor)
+
   return {
     totalTrades,
     winningTrades,
@@ -102,6 +109,7 @@ export function calculateMetrics(trades: Trade[]): TradeMetrics {
     averageWin,
     averageLoss,
     expectancy,
+    assertiveness,
   }
 }
 
@@ -162,6 +170,28 @@ function calculateMaxDrawdown(trades: Trade[]): { maxDrawdown: number; maxDrawdo
   })
   
   return { maxDrawdown, maxDrawdownPercent }
+}
+
+function calculateAssertiveness(winRate: number, avgWinLossRatio: number, profitFactor: number): number {
+  // Assertiveness Score (0-100)
+  // Combina múltiplos fatores para determinar a qualidade das entradas
+  
+  if (winRate === 0) return 0
+  
+  // Componente 1: Win Rate (peso 40%)
+  const winRateScore = Math.min(winRate / 70, 1) * 40 // Normalizado para 70% = 100%
+  
+  // Componente 2: Ratio Win/Loss Size (peso 30%)
+  // Ideal: winners 2x maiores que losers
+  const ratioScore = Math.min(avgWinLossRatio / 2, 1) * 30
+  
+  // Componente 3: Profit Factor (peso 30%)
+  // Ideal: > 2.0
+  const profitFactorScore = Math.min(profitFactor / 2, 1) * 30
+  
+  const assertiveness = winRateScore + ratioScore + profitFactorScore
+  
+  return Math.min(assertiveness, 100) // Cap em 100
 }
 
 export interface EquityPoint {

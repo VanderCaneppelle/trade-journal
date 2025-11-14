@@ -81,6 +81,18 @@ export default async function AnalysisPage() {
         {/* Risk Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <KPICard
+            title="Assertividade"
+            value={`${formatNumber(metrics.assertiveness, 1)}%`}
+            subtitle={
+              metrics.assertiveness >= 70 ? "🎯 Excelente precisão" :
+              metrics.assertiveness >= 50 ? "✅ Boa assertividade" :
+              "⚠️ Precisa melhorar"
+            }
+            icon="Target"
+            valueColor={metrics.assertiveness >= 70 ? 'profit' : metrics.assertiveness >= 50 ? 'neutral' : 'loss'}
+          />
+          
+          <KPICard
             title="R:R Ratio"
             value={formatNumber(Math.abs(metrics.averageWin / metrics.averageLoss), 2)}
             subtitle="Risk/Reward ratio"
@@ -94,16 +106,11 @@ export default async function AnalysisPage() {
           />
           
           <KPICard
-            title="Win Streak"
-            value={formatNumber(metrics.winningTrades, 0)}
-            subtitle="consecutive wins"
-            valueColor="profit"
-          />
-          
-          <KPICard
-            title="Total Trades"
-            value={metrics.totalTrades}
-            subtitle="all time"
+            title="Max Drawdown"
+            value={formatCurrency(metrics.maxDrawdown)}
+            subtitle="⚠ Largest drawdown"
+            icon="TrendingDown"
+            valueColor="loss"
           />
         </div>
 
