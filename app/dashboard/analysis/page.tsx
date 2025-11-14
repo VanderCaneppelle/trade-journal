@@ -5,7 +5,6 @@ import { SetupPerformance } from '@/components/analysis/setup-performance'
 import { WinLossDistribution } from '@/components/analysis/win-loss-distribution'
 import { HourlyHeatmap } from '@/components/analysis/hourly-heatmap'
 import { calculateMetrics, calculateSetupStats } from '@/lib/metrics'
-import { TrendingUp, Target, Award, Zap } from 'lucide-react'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -50,7 +49,7 @@ export default async function AnalysisPage() {
             title="Average Win"
             value={formatCurrency(metrics.averageWin)}
             subtitle="per winning trade"
-            icon={TrendingUp}
+            icon="TrendingUp"
             valueColor="profit"
           />
           
@@ -58,7 +57,7 @@ export default async function AnalysisPage() {
             title="Average Loss"
             value={formatCurrency(metrics.averageLoss)}
             subtitle="per losing trade"
-            icon={Target}
+            icon="Target"
             valueColor="loss"
           />
           
@@ -66,7 +65,7 @@ export default async function AnalysisPage() {
             title="Largest Win"
             value={formatCurrency(metrics.largestWin)}
             subtitle="🎯 Best trade"
-            icon={Award}
+            icon="Award"
             valueColor="profit"
           />
           
@@ -74,7 +73,7 @@ export default async function AnalysisPage() {
             title="Expectancy"
             value={formatCurrency(metrics.expectancy)}
             subtitle="per trade"
-            icon={Zap}
+            icon="Zap"
             valueColor={metrics.expectancy >= 0 ? 'profit' : 'loss'}
           />
         </div>

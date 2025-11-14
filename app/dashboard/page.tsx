@@ -9,15 +9,6 @@ import {
   calculateEquityCurve, 
   calculateDailyStats 
 } from '@/lib/metrics'
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Target, 
-  Activity, 
-  Percent,
-  BarChart3,
-  TrendingDown
-} from 'lucide-react'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -80,7 +71,7 @@ export default async function DashboardPage() {
             title="Current P&L"
             value={formatCurrency(metrics.totalPnL)}
             subtitle={`${metrics.totalTrades} total trades`}
-            icon={DollarSign}
+            icon="DollarSign"
             valueColor={metrics.totalPnL >= 0 ? 'profit' : 'loss'}
             delay={0}
           />
@@ -89,14 +80,14 @@ export default async function DashboardPage() {
             title="Average Trades"
             value={formatNumber(metrics.totalTrades / 30, 1)}
             subtitle="per day"
-            icon={Activity}
+            icon="Activity"
             delay={0.1}
           />
           
           <KPICard
             title="Average Daily Profit"
             value={formatCurrency(metrics.averageDailyProfit)}
-            icon={TrendingUp}
+            icon="TrendingUp"
             valueColor={metrics.averageDailyProfit >= 0 ? 'profit' : 'loss'}
             delay={0.2}
           />
@@ -105,7 +96,7 @@ export default async function DashboardPage() {
             title="Win Rate"
             value={`${formatNumber(metrics.winRate, 1)}%`}
             subtitle={`${metrics.winningTrades}W / ${metrics.losingTrades}L`}
-            icon={Target}
+            icon="Target"
             valueColor={metrics.winRate >= 50 ? 'profit' : 'loss'}
             delay={0.3}
           />
@@ -117,7 +108,7 @@ export default async function DashboardPage() {
             title="Profit Factor"
             value={formatNumber(metrics.profitFactor, 2)}
             subtitle="✨ Excellent strategy"
-            icon={BarChart3}
+            icon="BarChart3"
             valueColor={metrics.profitFactor >= 1.5 ? 'profit' : metrics.profitFactor >= 1 ? 'neutral' : 'loss'}
             delay={0.4}
           />
@@ -126,7 +117,7 @@ export default async function DashboardPage() {
             title="Consistency Score"
             value={formatNumber(metrics.consistencyScore, 0)}
             subtitle="⚡ Moderate consistency"
-            icon={Percent}
+            icon="Percent"
             valueColor={metrics.consistencyScore >= 60 ? 'profit' : 'neutral'}
             delay={0.5}
           />
@@ -135,7 +126,7 @@ export default async function DashboardPage() {
             title="Sharpe Ratio"
             value={formatNumber(metrics.sharpeRatio, 2)}
             subtitle="📊 Good risk-adjusted returns"
-            icon={TrendingUp}
+            icon="TrendingUp"
             valueColor={metrics.sharpeRatio >= 1 ? 'profit' : 'neutral'}
             delay={0.6}
           />
@@ -144,7 +135,7 @@ export default async function DashboardPage() {
             title="Max Drawdown"
             value={formatCurrency(metrics.maxDrawdown)}
             subtitle="⚠ Largest drawdown"
-            icon={TrendingDown}
+            icon="TrendingDown"
             valueColor="loss"
             delay={0.7}
           />

@@ -3,7 +3,6 @@ import { Header } from '@/components/header'
 import { TradingCalendar } from '@/components/calendar/trading-calendar'
 import { KPICard } from '@/components/dashboard/kpi-card'
 import { calculateDailyStats, calculateMetrics } from '@/lib/metrics'
-import { Calendar as CalendarIcon, TrendingUp, Target, Award } from 'lucide-react'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -65,14 +64,14 @@ export default async function CalendarPage() {
             title="Total Trading Days"
             value={totalDays}
             subtitle="in the last 90 days"
-            icon={CalendarIcon}
+            icon="Activity"
           />
           
           <KPICard
             title="Profitable Days"
             value={`${formatNumber(profitableDaysPercent, 1)}%`}
             subtitle={`${profitableDays} of ${totalDays} days`}
-            icon={TrendingUp}
+            icon="TrendingUp"
             valueColor={profitableDaysPercent >= 60 ? 'profit' : 'neutral'}
           />
           
@@ -80,7 +79,7 @@ export default async function CalendarPage() {
             title="Best Day"
             value={bestDay ? formatCurrency(bestDay.pnl) : '$0'}
             subtitle={bestDay ? new Date(bestDay.date).toLocaleDateString() : '-'}
-            icon={Award}
+            icon="Award"
             valueColor="profit"
           />
           
@@ -88,7 +87,7 @@ export default async function CalendarPage() {
             title="Worst Day"
             value={worstDay ? formatCurrency(worstDay.pnl) : '$0'}
             subtitle={worstDay ? new Date(worstDay.date).toLocaleDateString() : '-'}
-            icon={Target}
+            icon="Target"
             valueColor="loss"
           />
         </div>

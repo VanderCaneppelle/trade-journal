@@ -1,7 +1,17 @@
 "use client"
 
 import { Card, CardContent } from '@/components/ui/card'
-import { LucideIcon } from 'lucide-react'
+import { 
+  DollarSign, 
+  TrendingUp, 
+  Target, 
+  Activity, 
+  Percent,
+  BarChart3,
+  TrendingDown,
+  Award,
+  Zap
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 
@@ -9,23 +19,36 @@ interface KPICardProps {
   title: string
   value: string | number
   subtitle?: string
-  icon?: LucideIcon
+  icon?: string
   trend?: 'up' | 'down' | 'neutral'
   trendValue?: string
   valueColor?: 'profit' | 'loss' | 'neutral'
   delay?: number
 }
 
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  DollarSign,
+  TrendingUp,
+  Target,
+  Activity,
+  Percent,
+  BarChart3,
+  TrendingDown,
+  Award,
+  Zap,
+}
+
 export function KPICard({
   title,
   value,
   subtitle,
-  icon: Icon,
+  icon,
   trend,
   trendValue,
   valueColor = 'neutral',
   delay = 0,
 }: KPICardProps) {
+  const Icon = icon ? iconMap[icon] : null
   const colorClasses = {
     profit: 'text-profit',
     loss: 'text-loss',
