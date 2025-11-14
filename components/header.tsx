@@ -1,6 +1,7 @@
 "use client"
 
 import { Bell, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
+import { createClient } from '@/lib/supabase/client'
 
 interface HeaderProps {
   title: string
@@ -17,6 +19,15 @@ interface HeaderProps {
 }
 
 export function Header({ title, subtitle }: HeaderProps) {
+  const router = useRouter()
+  const supabase = createClient()
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
+
   return (
     <div className="flex h-16 items-center justify-between border-b border-border/50 bg-card/30 backdrop-blur-sm px-6">
       <div>
@@ -42,12 +53,8 @@ export function Header({ title, subtitle }: HeaderProps) {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <form action="/auth/signout" method="post" className="w-full">
-                <button type="submit" className="w-full text-left">
-                  Sign Out
-                </button>
-              </form>
+            <DropdownMenuItem onClick={handleSignOut}>
+              Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

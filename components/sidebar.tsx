@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { 
   LayoutDashboard, 
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Button } from './ui/button'
 import { Separator } from './ui/separator'
+import { createClient } from '@/lib/supabase/client'
 
 const navItems = [
   {
@@ -39,6 +40,14 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createClient()
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   return (
     <div className="flex h-screen w-64 flex-col fixed left-0 top-0 border-r border-border/50 bg-card/50 backdrop-blur-md">
@@ -95,16 +104,14 @@ export function Sidebar() {
           <span>Settings</span>
         </Link>
         
-        <form action="/auth/signout" method="post">
-          <Button
-            type="submit"
-            variant="ghost"
-            className="w-full justify-start text-muted-foreground hover:text-foreground"
-          >
-            <LogOut className="mr-3 h-5 w-5" />
-            Sign Out
-          </Button>
-        </form>
+        <Button
+          onClick={handleSignOut}
+          variant="ghost"
+          className="w-full justify-start text-muted-foreground hover:text-foreground"
+        >
+          <LogOut className="mr-3 h-5 w-5" />
+          Sign Out
+        </Button>
       </div>
     </div>
   )
